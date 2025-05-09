@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menachery-Erinjery Family</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Menachery-Erinjery Family</h1>
+        <p>Explore the Legacy of Faith and Heritage</p>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About</a></li>
+            <li><a href="#photos">Photos</a></li>
+            <li><a href="#events">Events</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about" class="section">
+            <h2 class="section-title">About the Menachery-Erinjery Family</h2>
+            <p>The Menacherys or Menasserys, a large 'clan', are spread across the former Cochin State, Kerala, and beyond. This group shares a name and characteristics, with subgroups like Menachery-Erinjery, Menachery-Irumpen, and Menachery-Myliparamban. Clusters of Menacherys can be found in Njarakkal, Parur, Angamaly, Karimalur, Chalakkudy, Mukkattukara, Ollur, Cherpu, and Chiyyaram.</p>
+            <h2 class="section-title">Sub-groups</h2>
+            <p>The Menachery-Erinjery sub-groups of Ollur, Cherpu, and Chiyyaram were once part of the Pazhuvil parish. Their connection to the Kattur-Pazhuvil coastal belt and the Mukkatukara sub-group warrants further research. The possibility of their roots tracing back to the 'Pudumenassery' family, who accepted the faith from the Apostle, is another area of interest.</p>
+            <h2 class="section-title">Connection to Apostle Thomas</h2>
+            <p>Family history strongly suggests a link to Apostle Thomas. Notably, a Menassery hamlet exists near Kokkamangalam, where the Apostle preached. A church and a temple in the area further support this claim.</p>
+            <p>The Menacherys trace their expansion from Njarakkal near Menassery and Pallipuram to the Cherpu-Ollur-Chiyyaram area. They boast a history of eminent Malpans and priests, with three brothers joining the Order of Discalced Carmelites (OCD) in Vazhakkulam in the 19th century.</p>
+        </section>
+
+        <section id="photos" class="section">
+            <h2>Church Photos</h2>
+            <div class="gallery">
+                <img src="./output.jpg" alt="St Anthony's Forane Church, Ollur">
+                <img src="https://via.placeholder.com/300x200?text=St+Anthony's+Forane+Church+Ollur+2" alt="St Anthony's Forane Church, Ollur">
+                <img src="https://via.placeholder.com/300x200?text=St+Anthony's+Forane+Church+Pazhuvil+1" alt="St Anthony's Forane Church, Pazhuvil">
+                <img src="https://via.placeholder.com/300x200?text=St+Anthony's+Forane+Church+Pazhuvil+2" alt="St Anthony's Forane Church, Pazhuvil">
+                <img src="https://via.placeholder.com/300x200?text=St+Anthony's+Church+Cherpu+1" alt="St Anthony's Church, Cherpu">
+                <img src="https://via.placeholder.com/300x200?text=St+Anthony's+Church+Cherpu+2" alt="St Anthony's Church, Cherpu">
+                <img src="https://via.placeholder.com/300x200?text=Vijayamatha+Church+Chiyyaram+1" alt="Vijayamatha Church, Chiyyaram">
+                <img src="https://via.placeholder.com/300x200?text=Vijayamatha+Church+Chiyyaram+2" alt="Vijayamatha Church, Chiyyaram">
+                <img src="https://via.placeholder.com/300x200?text=St+Thomas+Church+Kokkamangalam+1" alt="St Thomas Church, Kokkamangalam">
+                <img src="https://via.placeholder.com/300x200?text=St+Thomas+Church+Kokkamangalam+2" alt="St Thomas Church, Kokkamangalam">
+                <img src="https://via.placeholder.com/300x200?text=St+Thomas+Cross+Pallipuram+1" alt="St Thomas Cross, Pallipuram">
+                <img src="https://via.placeholder.com/300x200?text=St+Thomas+Cross+Pallipuram+2" alt="St Thomas Cross, Pallipuram">
+            </div>
+        </section>
+
+        <section id="events" class="section">
+            <h2>Events</h2>
+            <p>Stay tuned for upcoming family events and gatherings. Check the Kodumbhayogam News for the latest updates.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 Menachery-Erinjery Family. All rights reserved.</p>
+        <p>
+            <a href="#">Ollur Sub-group</a> |
+            <a href="#">Cherpu Sub-group</a> |
+            <a href="#">Chiyyaram Sub-group</a> |
+            <a href="#">Events</a> |
+            <a href="#">Kodumbhayogam News</a>
+        </p>
+    </footer>
+
+    <script>
+         // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                
+            });
+        });
+
+        // Add animation on scroll
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+
+                    // Add active class to nav link
+                    const id = entry.target.id;
+                    document.querySelectorAll('nav a').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            section.classList.add('section-hidden');
+            observer.observe(section);
+        });
+
+        // CSS for animation
+        const style = document.createElement('style');
+        style.textContent = `
+            .section-hidden {
+                opacity: 0;
+                transform: translateY(40px);
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            }
+            .section-hidden.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

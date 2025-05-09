@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menachery-Erinjery Family</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #eef2ff; /* Light blue background */
+            color: #312e81; /* Dark blue text */
+            line-height: 1.7;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(to bottom, #3b82f6, #ffffff); /* Blue to white gradient */
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://source.unsplash.com/random/1920x1080/?heritage') no-repeat center/cover;
+            opacity: 0.2;
+            z-index: 0;
+            animation: zoom 30s ease-in-out infinite;
+        }
+
+        header h1 {
+            font-size: 4.5rem;
+            font-weight: 900;
+            z-index: 1;
+            animation: typeEffect 2s steps(30) forwards, headerBounce 2s infinite;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 4px solid #fff;
+            width: 0;
+        }
+
+        header p {
+            font-size: 1.6rem;
+            max-width: 650px;
+            z-index: 1;
+            animation: fadeInUp 1.5s ease-out 0.5s forwards;
+            opacity: 0;
+            font-weight: 300;
+        }
+
+        .navigate-button {
+            margin-top: 1.5rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            background: #4f46e5;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            z-index: 1; /* Ensure the button is above other elements */
+            position: relative; /* Ensure proper stacking context */
+        }
+
+        .navigate-button:hover {
+            background: #6366f1;
+            transform: scale(1.1);
+        }
+
+        .navigate-button:active {
+            transform: scale(0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: center; /* Center the navbar horizontally */
+            align-items: center;
+            position: sticky; /* Keep the navbar sticky at the top */
+            top: 0;
+            z-index: 1000;
+            padding: 1rem;
+
+            transition: all 0.4s ease;
+        }
+
+        .hamburger {
+            display: none; /* Hide hamburger menu */
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            flex-wrap: wrap;
+            gap: 2rem;
+            background: rgba(255, 255, 255, 0.2); /* Transparent white background for Glassmorphism */
+            backdrop-filter: blur(10px); /* Blur effect */
+            border: 1px solid rgba(255, 255, 255, 0.3); /* Subtle border for depth */
+            border-radius: 50px; /* Rounded corners for the container */
+            padding: 0.8rem 2rem; /* Padding around the links */
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            transition: all 0.4s ease;
+        }
+
+        .nav-links.hidden {
+            display: none;
+        }
+
+        nav ul li {
+            animation: bounceIn 0.6s ease-out forwards, navSlideIn 0.6s ease-out forwards;
+            animation-delay: calc(var(--index) * 0.15s);
+        }
+
+        nav ul li a {
+            background: transparent; /* Remove individual link background */
+            color: #312e81; /* Dark blue text for better contrast */
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: #ffffff;
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background: rgba(255, 255, 255, 0.3); /* Slightly brighter hover effect */
+            color: #4f46e5; /* Vibrant blue text */
+            transform: scale(1.1);
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+        nav ul li a.active {
+            color: #ffffff;
+            background: #1e40af;
+        }
+
+        nav ul li a.active::after {
+            width: 100%; /* Full underline for active link */
+            left: 0;
+            height: 2px;
+            background: #4f46e5; /* Vibrant blue underline */
+            transition: width 0.3s ease, left 0.3s ease;
+        }
+
+        .nav-hidden {
+            top: -100px;
+        }
+
+        .container {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 4rem 1.5rem;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.15); 
+            /* backdrop-filter: blur(20px); Moderate blur for glass effect */
+            padding: 3.5rem;
+            margin-bottom: 3rem;
+            border-radius: 16px; /* Rounded corners */
+            border: 1px solid rgba(255, 255, 255, 0.25); /* Subtle border for depth */
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15); /* Soft shadow for floating effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-10px); /* Slight lift on hover */
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.25); /* Enhanced shadow on hover */
+        }
+
+        .section h2 {
+            color: #4f46e5; /* Updated to a vibrant blue */
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for clarity */
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .section p {
+            color: #000000;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4); /* Subtle shadow for clarity */
+            font-size: 1.2rem;
+            line-height: 1.8;
+            animation: fadeInText 5s ease-in-out forwards;
+            opacity: 0; /* Ensure text starts hidden */
+        }
+
+        .gallery {
+            position: relative;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 260px;
+            object-fit: cover;
+            filter: brightness(0.9) contrast(1.1); /* Slightly dimmed and enhanced contrast for better focus */
+            transition: all 0.5s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Enhanced shadow for better focus */
+            animation: imageScale 1s ease-out forwards, galleryFadeIn 1.2s ease-out forwards;
+            animation-delay: calc(var(--index) * 0.12s);
+        }
+
+        .gallery-item img:hover {
+            transform: scale(1.1) rotate(3deg) translateX(10px); /* Project image slightly with left margin */
+            margin-left: 15px; /* Add left margin on hover */
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+            filter: brightness(1.2) contrast(1.3); /* Further brightened and enhanced contrast */
+            transition: transform 0.4s ease, margin-left 0.4s ease, box-shadow 0.4s ease, filter 0.4s ease; /* Smoother transitions */
+        }
+
+        .gallery-item:hover .overlay {
+            opacity: 1;
+            transform: translateY(0); /* Show overlay data */
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .overlay h3 {
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+            font-weight: 600;
+            text-align: left; /* Align text to the left */
+            margin-left: 10px; /* Add a small left margin */
+        }
+
+        .overlay a {
+            background: #6366f1;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: background 0.3s ease;
+        }
+
+        .overlay a:hover {
+            background: #7c3aed;
+        }
+
+        footer {
+            background: linear-gradient(to top, #e0e7ff, #c7d2fe); /* Light blue gradient */
+            color: #312e81; /* Dark blue text */
+            padding: 4rem 1rem;
+            text-align: center;
+            position: relative;
+        }
+
+        footer p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        footer a {
+            color: #6366f1; /* Blue links */
+            text-decoration: none;
+            margin: 0 1.2rem;
+            font-weight: 500;
+            transition: all 0.4s ease;
+            display: inline-block;
+            animation: pulse 1.5s ease-out infinite;
+            animation-delay: calc(var(--index) * 0.2s);
+        }
+
+        footer a:hover {
+            color: #7c3aed; /* Purple hover effect */
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(124, 58, 237, 0.8);
+        }
+
+        @keyframes typeEffect {
+            from { width: 0; }
+            to { width: 100%; border-right: none; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes bounceIn {
+            0% { opacity: 0; transform: scale(0.3); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes imageScale {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes zoom {
+            0% { transform: scale(1.1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1.1); }
+        }
+
+        @keyframes headerBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-20px); }
+            60% { transform: translateY(-10px); }
+        }
+
+        @keyframes navSlideIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes galleryFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                height: 100vh; /* Ensure header occupies full height */
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                padding: 2rem 1rem;
+            }
+
+            header h1 {
+                font-size: 2.8rem; /* Adjust font size for smaller screens */
+                word-wrap: break-word; /* Allow text to wrap */
+                white-space: normal; /* Prevent text overflow */
+                text-align: center; /* Center-align text */
+            }
+
+            header p {
+                font-size: 1.2rem; /* Adjust font size for better readability */
+            }
+
+            .navigate-button {
+                margin-top: 1.5rem;
+            }
+
+            .hamburger {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                cursor: pointer;
+                z-index: 1001;
+                position: absolute;
+                top: 15px; /* Position at the top */
+                left: 15px; /* Position at the left */
+                width: 40px;
+                height: 40px;
+                background: #4f46e5; /* Match theme color */
+                border-radius: 50%; /* Make it circular */
+                justify-content: center;
+                align-items: center;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            }
+
+            .hamburger div {
+                width: 20px;
+                height: 3px;
+                background: #ffffff; /* White bars for contrast */
+                border-radius: 2px;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+                position: absolute;
+                top: 60px;
+                right: 10px;
+                width: 200px;
+                padding: 1rem;
+                box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+                background: rgba(255, 255, 255, 0.9);
+                display: none;
+            }
+
+            .nav-links.hidden {
+                display: flex;
+            }
+
+            .section {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .gallery img {
+                height: 200px;
+            }
+
+            footer {
+                padding: 2rem 1rem;
+            }
+
+            footer p {
+                font-size: 1rem;
+            }
+
+            footer a {
+                font-size: 0.9rem;
+            }
+
+            footer .social-icons a {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header h1 {
+                font-size: 2.5rem; /* Further adjust font size for very small screens */
+            }
+
+            header p {
+                font-size: 1rem; /* Adjust font size for very small screens */
+            }
+
+            .section {
+                padding: 2rem 1rem;
+            }
+
+            .section h2 {
+                font-size: 1.8rem;
+            }
+
+            .gallery img {
+                height: 180px;
+            }
+
+            footer p {
+                font-size: 0.9rem;
+            }
+
+            footer a {
+                font-size: 0.8rem;
+            }
+
+            footer .social-icons a {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Ensure the function is defined before usage
+        function navigateToAboutSection() {
+            const aboutSection = document.querySelector('#about');
+            if (aboutSection) {
+                aboutSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.error('About section not found');
+            }
+        }
+
+        // Toggle hamburger menu for mobile view
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('hidden');
+        }
+
+        // Remove particle effect for header
+        const headerCanvas = document.querySelector('header canvas');
+        if (headerCanvas) {
+            headerCanvas.remove();
+        }
+
+        // Remove particle effect for the main page
+        const mainCanvas = document.querySelector('body canvas');
+        if (mainCanvas) {
+            mainCanvas.remove();
+        }
+    </script>
+    <header>
+        <h1>Menachery-Erinjery Family</h1>
+        <p>A Legacy of Faith and Heritage</p>
+        <button class="navigate-button" onclick="navigateToAboutSection()">👉 Click Here</button>
+    </header>
+
+    <nav>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul class="nav-links">
+            <li style="--index: 1;"><a href="#about">About</a></li>
+            <li style="--index: 2;"><a href="#photos">Photos</a></li>
+            <li style="--index: 3;"><a href="#events">Events</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about" class="section">
+            <h2>About Us</h2>
+            <p style="--index: 1;">The Menacherys or Menasserys - in local Malayalam, form a large so-called 'clan', which has its extended and individual families spread out in the whole of erstwhile Cochin State, and today you may find them in different parts of Kerala, other States of India and even in different continents. The word 'clan' is used because different subgroups of Menacherys share the same name or have some shared interests or characteristics.</p>
+            <p style="--index: 2;">One comes across clusters of Menacherys in Njarakkal, Parur, Angamaly, Karimalur, Chalakkudy, Mukkattukara, Ollur, Cherpu and Chiyyaram. Often, a sub-group is identified by a second name, like Menachery-Erinjery, Menachery-Irumpen and Menachery-Myliparamban.</p>
+            <p style="--index: 3;">The sub-groups of Ollur, Cherpu and Chiyyaram, identified as Menachery-Erinjery, were once under the Pazhuvil parish till the establishment of parish churches in Ollur, Cherpu and much later in Chiyyaram. The connections of these sub-groups with the Kattur-Pazhuvil coastal belt on the banks of Kol Lands deserve further investigation, though their ancestors always mentioned these places. The claims of the interrelationship with the Mukkatukara sub-group also need a historical enquiry. Do they have anything to do with the Erijery Angadi in Thrissur, starting from the Marthamariam Church, perhaps established by Shakthan Thampuran? Can we trace their roots to the 'Pudumenassery' family, which accepted the faith from the Apostle in Parur or Palayur as the tradition claims?</p>
+            <p style="--index: 4;">The ancestors and elders of the family always speak about the family's connection with the Apostle Thomas. Specific investigations have revealed that a Menassery hamlet exists just 12 km from Kokkamangalam, where the Apostle preached the Gospel, added 1600 faithful to the folk, and planted a Cross; the Cross thrown away by the miscreants to the Vembanad Wetland is now in Pallipuram church (Ramban Pattu). There is a church in the name of the Apostle in Kokkamangalam. There is still a Menassery Temple near the hamlet, as well.</p>
+            <p style="--index: 5;">The Menacherys spread out from Njarakkal near Menassery and Pallipuram to the Cherpu-Ollur-Chiyyaram belt close to the coast on the banks of Vembanad-Kol Wetland, providing inland navigation. They had a chain of eminent Malpans and priests. In the nineteenth century, three brothers from their family together joined the Order of Discalced Carmelites (OCD) in Vazhakkulam.</p>
+        </section>
+
+        <section id="photos" class="section">
+            <h2>Church Photos</h2>
+            <div class="gallery">
+                <div class="gallery-item" style="--index: 1;">
+                    <img src="./output.jpg" alt="St Anthony's Forane Church, Ollur">
+                    <div class="overlay">
+                        <h3>St Anthony's Forane Church, Ollur</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 2;">
+                    <img src="./output.jpg" alt="St Anthony's Forane Church, Ollur">
+                    <div class="overlay">
+                        <h3>St Anthony's Forane Church, Ollur</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 3;">
+                    <img src="./output.jpg" alt="St Anthony's Forane Church, Pazhuvil">
+                    <div class="overlay">
+                        <h3>St Anthony's Forane Church, Pazhuvil</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 4;">
+                    <img src="./output.jpg" alt="St Anthony's Forane Church, Pazhuvil">
+                    <div class="overlay">
+                        <h3>St Anthony's Forane Church, Pazhuvil</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 5;">
+                    <img src="./output.jpg" alt="St Anthony's Church, Cherpu">
+                    <div class="overlay">
+                        <h3>St Anthony's Church, Cherpu</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 6;">
+                    <img src="./output.jpg" alt="St Anthony's Church, Cherpu">
+                    <div class="overlay">
+                        <h3>St Anthony's Church, Cherpu</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 7;">
+                    <img src="./output.jpg" alt="Vijayamatha Church, Chiyyaram">
+                    <div class="overlay">
+                        <h3>Vijayamatha Church, Chiyyaram</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 8;">
+                    <img src="./output.jpg" alt="Vijayamatha Church, Chiyyaram">
+                    <div class="overlay">
+                        <h3>Vijayamatha Church, Chiyyaram</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 9;">
+                    <img src="./output.jpg" alt="St Thomas Church, Kokkamangalam">
+                    <div class="overlay">
+                        <h3>St Thomas Church, Kokkamangalam</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 10;">
+                    <img src="./output.jpg" alt="St Thomas Church, Kokkamangalam">
+                    <div class="overlay">
+                        <h3>St Thomas Church, Kokkamangalam</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 11;">
+                    <img src="./output.jpg" alt="St Thomas Cross, Pallipuram">
+                    <div class="overlay">
+                        <h3>St Thomas Cross, Pallipuram</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+                <div class="gallery-item" style="--index: 12;">
+                    <img src="./output.jpg" alt="St Thomas Cross, Pallipuram">
+                    <div class="overlay">
+                        <h3>St Thomas Cross, Pallipuram</h3>
+                        <a href="https://goo.gl/maps/example" target="_blank">View Location</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="events" class="section">
+            <h2>Events</h2>
+            <p style="--index: 1;">Stay tuned for upcoming family events and gatherings. Check the Kodumbhayogam News for the latest updates.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2025 Menachery-Erinjery Family. All rights reserved.</p>
+        <p>
+            <a style="--index: 1;" href="#">Ollur Sub-group</a> |
+            <a style="--index: 2;" href="#">Cherpu Sub-group</a> |
+            <a style="--index: 3;" href="#">Chiyyaram Sub-group</a> |
+            <a style="--index: 4;" href="#">Events</a> |
+            <a style="--index: 5;" href="#">Kodumbhayogam News</a>
+        </p>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add animation on scroll
+        const sections = document.querySelectorAll('.section');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        sections.forEach(section => {
+            section.classList.add('section-hidden');
+            observer.observe(section);
+        });
+
+        // CSS for animation
+        const style = document.createElement('style');
+        style.textContent = `
+            .section-hidden {
+                opacity: 0;
+                transform: translateY(50px);
+                transition: opacity 1s ease-out, transform 1s ease-out;
+            }
+            .section-hidden.visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Add hover effect for navigation links
+        document.querySelectorAll('nav ul li a').forEach(link => {
+            link.addEventListener('mouseover', () => {
+                link.style.animation = 'pulse 0.5s ease-in-out';
+            });
+            link.addEventListener('mouseout', () => {
+                link.style.animation = '';
+            });
+        });
+
+        // Highlight active link in the navbar
+        const navLinks = document.querySelectorAll('nav ul li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.forEach(nav => nav.classList.remove('active'));
+                link.classList.add('active');
+            });
+        });
+
+        // Highlight active link based on the current section in view
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav ul li a');
+
+        const highlightActiveLink = () => {
+            let currentSection = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 50; // Adjust for navbar height
+                if (window.scrollY >= sectionTop) {
+                    currentSection = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(currentSection)) {
+                    link.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', highlightActiveLink);
+
+        // Function to navigate to the next section
+        function navigateToNextSection() {
+            const nextSection = document.querySelector('#about'); // Replace '#about' with the ID of the next section
+            nextSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Hide and show navbar on scroll
+        let lastScrollY = window.scrollY;
+        const navbar = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > lastScrollY) {
+                navbar.classList.add('nav-hidden'); // Hide navbar
+            } else {
+                navbar.classList.remove('nav-hidden'); // Show navbar
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        const paragraphs = document.querySelectorAll('.section p');
+        const paragraphObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationDelay = `${entry.target.style.getPropertyValue('--index') * 0.2}s`;
+                    entry.target.style.opacity = '1'; // Ensure visibility after animation
+                }
+            });
+        }, { threshold: 0.1 });
+
+        paragraphs.forEach(paragraph => {
+            paragraphObserver.observe(paragraph);
+        });
+    </script>
+</body>
+</html>
